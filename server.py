@@ -4,9 +4,12 @@ import sys
 
 sock = socket(AF_INET, SOCK_STREAM)
 
-
 serverPort = 12000
+
+#Binder serveren og starter den
 sock.bind(('127.0.0.1', serverPort))
+
+#venter på at klienter skal joine serveren
 sock.listen(1)
 
 while True:
@@ -34,14 +37,12 @@ while True:
         outputdata = f.read()
         f.close()
 
-        # HTTP responsheader
+        # HTTP respons. Sender innholdet til klienten
         header = 'HTTP/1.1 200 OK\r\n'
         header += 'Content-Type: text/html\r\n\r\n'
         header += outputdata
         connectionSocket.sendall(header.encode())
 
-
-       # connectionSocket.sendall("\r\n".encode())
 
         # Lukker forbindelsen
         connectionSocket.close()
@@ -53,6 +54,7 @@ while True:
         connectionSocket.close()
         continue
 
+#lukker serveren
 print("Avslutter")
 sock.close()
 sys.exit()

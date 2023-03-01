@@ -5,12 +5,12 @@ import _thread as thread
 
 sock = socket(AF_INET, SOCK_STREAM)
 
-
+#Binder serveren
 serverPort = 12000
-
 sock.bind(('127.0.0.1', serverPort))
 sock.listen(1)
 
+#Lager funksjonen handleclient som sjekker om filen klienten spør etter er tilgjengelig
 def handleclient (connectionSocket, addr):
 
 
@@ -27,10 +27,10 @@ def handleclient (connectionSocket, addr):
         filename = filename[1:]
 
         # Åpner filen og leser innholdet
-        f = open(filename)
+        fopen = open(filename)
         print("Prøver å åpne filen")
-        outputdata = f.read()
-        f.close()
+        outputdata = fopen.read()
+        fopen.close()
 
         # HTTP responsheader
         header = 'HTTP/1.1 200 OK\r\n'
@@ -51,7 +51,7 @@ def handleclient (connectionSocket, addr):
 
 
 
-
+#mens serveren er åpen
 while True:
     # Klart til å betjene klient
     print("[Server] Klar til å koble seg til ")
@@ -59,6 +59,7 @@ while True:
 
     connectionSocket, addr = sock.accept()
 
+    #Kaller på metoden handleclient som returnerer fil eller feilmelding
     thread.start_new_thread(handleclient, (connectionSocket, addr))
 
 
